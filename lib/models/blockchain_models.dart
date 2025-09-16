@@ -1,6 +1,5 @@
 // Blockchain and Digital Identity Models
 
-import 'dart:convert';
 
 /// Digital Tourist ID stored on blockchain
 class DigitalTouristID {
