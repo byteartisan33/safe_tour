@@ -27,7 +27,7 @@ class _BlockchainConsentScreenState extends State<BlockchainConsentScreen>
   final BlockchainService _blockchainService = BlockchainService();
 
   // Consent categories
-  Map<String, bool> _dataTypeConsents = {
+  final Map<String, bool> _dataTypeConsents = {
     'Personal Information': false,
     'Location Data': false,
     'Travel History': false,
@@ -36,7 +36,7 @@ class _BlockchainConsentScreenState extends State<BlockchainConsentScreen>
     'Document Images': false,
   };
 
-  Map<String, bool> _purposeConsents = {
+  final Map<String, bool> _purposeConsents = {
     'Identity Verification': false,
     'Safety Monitoring': false,
     'Emergency Response': false,
@@ -308,7 +308,7 @@ class _BlockchainConsentScreenState extends State<BlockchainConsentScreen>
                       Switch(
                         value: entry.value,
                         onChanged: (value) => onChanged(entry.key, value),
-                        activeColor: Colors.green[600],
+                        activeThumbColor: Colors.green[600],
                       ),
                     ],
                   ),

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../../models/user_models.dart';
 import '../../services/profile_service.dart';
 import '../../services/language_service.dart';
-import '../../services/accessibility_service.dart';
 import 'edit_profile_screen.dart';
 import 'language_settings_screen.dart';
 import 'accessibility_settings_screen.dart';

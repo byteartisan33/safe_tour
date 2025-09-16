@@ -1,9 +1,7 @@
 // Digital Tourist ID Widget for Dashboard
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/blockchain_models.dart';
-import '../services/blockchain_service.dart';
 
 class DigitalIdWidget extends StatefulWidget {
   final DigitalTouristID? digitalId;

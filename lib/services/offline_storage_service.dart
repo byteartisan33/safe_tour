@@ -34,7 +34,7 @@ class OfflineStorageService {
       print('Offline storage service initialized');
     } catch (e) {
       print('Offline storage initialization error: $e');
-      throw e;
+      rethrow;
     }
   }
 

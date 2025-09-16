@@ -76,7 +76,7 @@ class RealtimeSyncService {
       print('Real-time sync service initialized for user: $userId');
     } catch (e) {
       print('Real-time sync initialization error: $e');
-      throw e;
+      rethrow;
     }
   }
 

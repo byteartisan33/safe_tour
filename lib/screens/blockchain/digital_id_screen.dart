@@ -332,7 +332,7 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
           else
             ...widget.digitalId.credentials
                 .map((credential) => _buildCredentialCard(credential))
-                .toList(),
+                ,
         ],
       ),
     );
@@ -353,7 +353,7 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
           else
             ...widget.digitalId.auditTrail
                 .map((entry) => _buildAuditTrailCard(entry))
-                .toList(),
+                ,
         ],
       ),
     );
@@ -611,7 +611,7 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
                     (detail) =>
                         _buildInfoRow(detail.key, detail.value.toString()),
                   )
-                  .toList(),
+                  ,
           ],
         ),
       ),

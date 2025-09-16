@@ -61,7 +61,7 @@ class FirebaseMessagingService {
       print('Firebase Messaging initialized for user: $userId');
     } catch (e) {
       print('Firebase Messaging initialization error: $e');
-      throw e;
+      rethrow;
     }
   }
 

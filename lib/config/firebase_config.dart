@@ -50,7 +50,7 @@ class FirebaseConfig {
       print('Firebase initialized successfully');
     } catch (e) {
       print('Firebase initialization error: $e');
-      throw e;
+      rethrow;
     }
   }
 

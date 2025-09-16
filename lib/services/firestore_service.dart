@@ -24,7 +24,7 @@ class FirestoreService {
       }, SetOptions(merge: true));
     } catch (e) {
       print('Save user profile error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -65,7 +65,7 @@ class FirestoreService {
       return docRef.id;
     } catch (e) {
       print('Save trip error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -78,7 +78,7 @@ class FirestoreService {
       });
     } catch (e) {
       print('Update trip error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -125,7 +125,7 @@ class FirestoreService {
       return docRef.id;
     } catch (e) {
       print('Save alert error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -138,7 +138,7 @@ class FirestoreService {
       });
     } catch (e) {
       print('Mark alert as read error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -187,7 +187,7 @@ class FirestoreService {
       });
     } catch (e) {
       print('Save location error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -235,7 +235,7 @@ class FirestoreService {
       return docRef.id;
     } catch (e) {
       print('Save emergency contact error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -252,7 +252,7 @@ class FirestoreService {
       });
     } catch (e) {
       print('Update emergency contact error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -262,7 +262,7 @@ class FirestoreService {
       await FirebaseCollections.getUserEmergencyContacts(userId).doc(contactId).delete();
     } catch (e) {
       print('Delete emergency contact error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -308,7 +308,7 @@ class FirestoreService {
       }, SetOptions(merge: true));
     } catch (e) {
       print('Save digital ID error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -402,7 +402,7 @@ class FirestoreService {
       await batch.commit();
     } catch (e) {
       print('Batch write error: $e');
-      throw e;
+      rethrow;
     }
   }
 }

@@ -235,7 +235,7 @@ class FirebaseAuthService {
       }, SetOptions(merge: true));
     } catch (e) {
       print('Save user data error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -268,7 +268,7 @@ class FirebaseAuthService {
       await batch.commit();
     } catch (e) {
       print('Delete user data error: $e');
-      throw e;
+      rethrow;
     }
   }
 

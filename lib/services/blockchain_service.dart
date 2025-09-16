@@ -27,13 +27,13 @@ class BlockchainService {
 
   // Current state
   DigitalTouristID? _currentDigitalId;
-  List<BlockchainTransaction> _transactionHistory = [];
+  final List<BlockchainTransaction> _transactionHistory = [];
   bool _isConnected = false;
 
   // Hyperledger connection configuration
-  String _networkUrl = 'https://api.hyperledger-network.example.com';
-  String _channelName = 'tourist-channel';
-  String _chaincodeName = 'tourist-identity';
+  final String _networkUrl = 'https://api.hyperledger-network.example.com';
+  final String _channelName = 'tourist-channel';
+  final String _chaincodeName = 'tourist-identity';
 
   /// Initialize blockchain connection
   Future<bool> initialize() async {
