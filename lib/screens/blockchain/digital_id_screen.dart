@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/blockchain_models.dart';
-import '../../services/blockchain_service.dart';
 
 class DigitalIdScreen extends StatefulWidget {
   final DigitalTouristID digitalId;
@@ -330,9 +329,9 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
               'Credentials will appear here as they are added to your Digital ID',
             )
           else
-            ...widget.digitalId.credentials
-                .map((credential) => _buildCredentialCard(credential))
-                ,
+            ...widget.digitalId.credentials.map(
+              (credential) => _buildCredentialCard(credential),
+            ),
         ],
       ),
     );
@@ -351,9 +350,9 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
               'Blockchain transaction history will appear here',
             )
           else
-            ...widget.digitalId.auditTrail
-                .map((entry) => _buildAuditTrailCard(entry))
-                ,
+            ...widget.digitalId.auditTrail.map(
+              (entry) => _buildAuditTrailCard(entry),
+            ),
         ],
       ),
     );
@@ -606,12 +605,9 @@ class _DigitalIdScreenState extends State<DigitalIdScreen>
               '${entry.blockHash.substring(0, 20)}...',
             ),
             if (entry.details.isNotEmpty)
-              ...entry.details.entries
-                  .map(
-                    (detail) =>
-                        _buildInfoRow(detail.key, detail.value.toString()),
-                  )
-                  ,
+              ...entry.details.entries.map(
+                (detail) => _buildInfoRow(detail.key, detail.value.toString()),
+              ),
           ],
         ),
       ),

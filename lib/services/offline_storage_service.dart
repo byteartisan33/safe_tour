@@ -9,7 +9,8 @@ import '../models/user_models.dart';
 import '../models/blockchain_models.dart';
 
 class OfflineStorageService {
-  static final OfflineStorageService _instance = OfflineStorageService._internal();
+  static final OfflineStorageService _instance =
+      OfflineStorageService._internal();
   factory OfflineStorageService() => _instance;
   OfflineStorageService._internal();
 
@@ -134,13 +135,23 @@ class OfflineStorageService {
     ''');
 
     // Create indexes for better performance
-    await db.execute('CREATE INDEX idx_locations_user_timestamp ON locations(user_id, timestamp)');
-    await db.execute('CREATE INDEX idx_alerts_user_created ON alerts(user_id, created_at)');
-    await db.execute('CREATE INDEX idx_pending_operations_user ON pending_operations(user_id)');
+    await db.execute(
+      'CREATE INDEX idx_locations_user_timestamp ON locations(user_id, timestamp)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_alerts_user_created ON alerts(user_id, created_at)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_pending_operations_user ON pending_operations(user_id)',
+    );
   }
 
   /// Upgrade database tables
-  Future<void> _upgradeTables(Database db, int oldVersion, int newVersion) async {
+  Future<void> _upgradeTables(
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {
     // Handle database schema upgrades here
     if (oldVersion < newVersion) {
       // Add migration logic for future versions
@@ -156,16 +167,12 @@ class OfflineStorageService {
     final data = jsonEncode(userData.toJson());
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-    await _database!.insert(
-      'user_profiles',
-      {
-        'id': userId,
-        'data': data,
-        'last_updated': timestamp,
-        'sync_status': 'pending',
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await _database!.insert('user_profiles', {
+      'id': userId,
+      'data': data,
+      'last_updated': timestamp,
+      'sync_status': 'pending',
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Get user profile from offline storage
@@ -228,7 +235,10 @@ class OfflineStorageService {
   /// Alert Operations
 
   /// Save alert offline
-  Future<String> saveAlert(String userId, Map<String, dynamic> alertData) async {
+  Future<String> saveAlert(
+    String userId,
+    Map<String, dynamic> alertData,
+  ) async {
     await _ensureInitialized();
 
     final alertId = 'alert_${DateTime.now().millisecondsSinceEpoch}';
@@ -248,7 +258,10 @@ class OfflineStorageService {
   }
 
   /// Get user alerts from offline storage
-  Future<List<Map<String, dynamic>>> getUserAlerts(String userId, {int limit = 50}) async {
+  Future<List<Map<String, dynamic>>> getUserAlerts(
+    String userId, {
+    int limit = 50,
+  }) async {
     await _ensureInitialized();
 
     final result = await _database!.query(
@@ -282,7 +295,10 @@ class OfflineStorageService {
   /// Location Operations
 
   /// Save location offline
-  Future<void> saveLocation(String userId, Map<String, dynamic> locationData) async {
+  Future<void> saveLocation(
+    String userId,
+    Map<String, dynamic> locationData,
+  ) async {
     await _ensureInitialized();
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -327,19 +343,28 @@ class OfflineStorageService {
       limit: limit,
     );
 
-    return result.map((row) => {
-      'id': row['id'],
-      'latitude': row['latitude'],
-      'longitude': row['longitude'],
-      'accuracy': row['accuracy'],
-      'timestamp': DateTime.fromMillisecondsSinceEpoch(row['timestamp'] as int),
-    }).toList();
+    return result
+        .map(
+          (row) => {
+            'id': row['id'],
+            'latitude': row['latitude'],
+            'longitude': row['longitude'],
+            'accuracy': row['accuracy'],
+            'timestamp': DateTime.fromMillisecondsSinceEpoch(
+              row['timestamp'] as int,
+            ),
+          },
+        )
+        .toList();
   }
 
   /// Emergency Contacts Operations
 
   /// Save emergency contact offline
-  Future<String> saveEmergencyContact(String userId, EmergencyContact contact) async {
+  Future<String> saveEmergencyContact(
+    String userId,
+    EmergencyContact contact,
+  ) async {
     await _ensureInitialized();
 
     final contactId = 'contact_${DateTime.now().millisecondsSinceEpoch}';
@@ -383,16 +408,12 @@ class OfflineStorageService {
     final data = jsonEncode(digitalId.toJson());
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
-    await _database!.insert(
-      'digital_ids',
-      {
-        'user_id': userId,
-        'data': data,
-        'last_updated': timestamp,
-        'sync_status': 'pending',
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await _database!.insert('digital_ids', {
+      'user_id': userId,
+      'data': data,
+      'last_updated': timestamp,
+      'sync_status': 'pending',
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Get digital ID from offline storage
@@ -419,7 +440,14 @@ class OfflineStorageService {
   Future<List<Map<String, dynamic>>> getPendingSyncOperations() async {
     await _ensureInitialized();
 
-    final tables = ['user_profiles', 'trips', 'alerts', 'locations', 'emergency_contacts', 'digital_ids'];
+    final tables = [
+      'user_profiles',
+      'trips',
+      'alerts',
+      'locations',
+      'emergency_contacts',
+      'digital_ids',
+    ];
     final pendingOperations = <Map<String, dynamic>>[];
 
     for (final table in tables) {
@@ -430,10 +458,7 @@ class OfflineStorageService {
       );
 
       for (final row in result) {
-        pendingOperations.add({
-          'table': table,
-          'data': row,
-        });
+        pendingOperations.add({'table': table, 'data': row});
       }
     }
 

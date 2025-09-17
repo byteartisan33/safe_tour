@@ -1,6 +1,5 @@
 // Blockchain and Digital Identity Models
 
-
 /// Digital Tourist ID stored on blockchain
 class DigitalTouristID {
   final String id;
@@ -77,14 +76,7 @@ class DigitalTouristID {
 }
 
 /// Blockchain status enumeration
-enum BlockchainStatus {
-  pending,
-  verified,
-  active,
-  suspended,
-  expired,
-  revoked,
-}
+enum BlockchainStatus { pending, verified, active, suspended, expired, revoked }
 
 /// Individual credential record on blockchain
 class CredentialRecord {
@@ -127,8 +119,8 @@ class CredentialRecord {
       type: json['type'],
       issuer: json['issuer'],
       issuedDate: DateTime.parse(json['issuedDate']),
-      expiryDate: json['expiryDate'] != null 
-          ? DateTime.parse(json['expiryDate']) 
+      expiryDate: json['expiryDate'] != null
+          ? DateTime.parse(json['expiryDate'])
           : null,
       data: json['data'],
       transactionHash: json['transactionHash'],
@@ -230,12 +222,7 @@ class BlockchainTransaction {
 }
 
 /// Transaction status enumeration
-enum TransactionStatus {
-  pending,
-  confirmed,
-  failed,
-  rejected,
-}
+enum TransactionStatus { pending, confirmed, failed, rejected }
 
 /// Blockchain consent record
 class BlockchainConsent {

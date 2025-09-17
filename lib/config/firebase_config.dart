@@ -13,24 +13,27 @@ class FirebaseConfig {
   static FirebaseMessaging? _messaging;
   static FirebaseAnalytics? _analytics;
 
+  // Google Maps API Configuration
+  static const String googleMapsApiKey =
+      "AIzaSyBwYP-T4OrdoXoaOBMtEA1nzlm0R6wSiXY";
+  static const String googleMapsProjectId = "safetourgit-91468817";
+
   // Firebase configuration options
   static const FirebaseOptions _firebaseOptions = FirebaseOptions(
-    apiKey: 'your-api-key-here',
-    appId: 'your-app-id-here',
-    messagingSenderId: 'your-sender-id-here',
-    projectId: 'safe-tour-app',
-    authDomain: 'safe-tour-app.firebaseapp.com',
-    storageBucket: 'safe-tour-app.appspot.com',
-    measurementId: 'your-measurement-id-here',
+    apiKey: 'AIzaSyBwYP-T4OrdoXoaOBMtEA1nzlm0R6wSiXY',
+    appId: '1:91468817:web:abcdef123456789012345678',
+    messagingSenderId: '91468817',
+    projectId: 'safetourgit-91468817',
+    authDomain: 'safetourgit-91468817.firebaseapp.com',
+    storageBucket: 'safetourgit-91468817.appspot.com',
+    measurementId: 'G-SAFETOURGIT',
   );
 
   /// Initialize Firebase services
   static Future<void> initialize() async {
     try {
       // Initialize Firebase app
-      _app = await Firebase.initializeApp(
-        options: _firebaseOptions,
-      );
+      _app = await Firebase.initializeApp(options: _firebaseOptions);
 
       // Initialize Firebase services
       _auth = FirebaseAuth.instance;
@@ -59,7 +62,7 @@ class FirebaseConfig {
     if (_firestore != null) {
       // Enable offline persistence
       await _firestore!.enablePersistence();
-      
+
       // Configure settings
       _firestore!.settings = const Settings(
         persistenceEnabled: true,
@@ -93,7 +96,9 @@ class FirebaseConfig {
       print('FCM Token: $token');
 
       // Handle background messages
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingBackgroundHandler,
+      );
 
       // Handle foreground messages
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -118,7 +123,9 @@ class FirebaseConfig {
   }
 
   /// Background message handler
-  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  static Future<void> _firebaseMessagingBackgroundHandler(
+    RemoteMessage message,
+  ) async {
     await Firebase.initializeApp(options: _firebaseOptions);
     print('Handling background message: ${message.messageId}');
   }
@@ -178,7 +185,10 @@ class FirebaseConfig {
   }
 
   /// Log analytics event
-  static Future<void> logEvent(String name, Map<String, Object>? parameters) async {
+  static Future<void> logEvent(
+    String name,
+    Map<String, Object>? parameters,
+  ) async {
     await _analytics?.logEvent(name: name, parameters: parameters);
   }
 

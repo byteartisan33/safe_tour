@@ -4,6 +4,7 @@ import '../../models/user_models.dart';
 import '../../services/safety_score_service.dart';
 import '../../services/geo_fencing_service.dart';
 import '../../services/emergency_service.dart';
+import '../../services/google_maps_service.dart';
 import '../alerts/geo_fencing_alerts_screen.dart';
 import '../emergency/panic_button_screen.dart';
 import '../../widgets/safety_score_widget.dart';
@@ -12,8 +13,10 @@ import '../../widgets/location_widget.dart';
 import '../../widgets/trip_summary_widget.dart';
 import '../../widgets/alerts_widget.dart';
 import '../../widgets/digital_id_widget.dart';
+import '../../widgets/google_maps_widget.dart';
 import '../profile/profile_settings_screen.dart';
 import '../blockchain/digital_id_screen.dart';
+import '../maps/interactive_map_screen.dart';
 import '../../services/blockchain_service.dart';
 import '../../models/blockchain_models.dart';
 
@@ -724,7 +727,10 @@ class _HomeDashboardState extends State<HomeDashboard>
   }
 
   void _showMap() {
-    // TODO: Show map screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const InteractiveMapScreen()),
+    );
   }
 
   void _showNearbyHospitals() {

@@ -14,7 +14,7 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseConfig.firestore;
 
   /// User Profile Operations
-  
+
   /// Save user profile data
   Future<void> saveUserProfile(String userId, UserData userData) async {
     try {
@@ -70,7 +70,11 @@ class FirestoreService {
   }
 
   /// Update trip data
-  Future<void> updateTrip(String userId, String tripId, TripDetails tripDetails) async {
+  Future<void> updateTrip(
+    String userId,
+    String tripId,
+    TripDetails tripDetails,
+  ) async {
     try {
       await FirebaseCollections.getUserTrips(userId).doc(tripId).update({
         ...tripDetails.toJson(),
@@ -85,10 +89,10 @@ class FirestoreService {
   /// Get user trips
   Future<List<TripDetails>> getUserTrips(String userId) async {
     try {
-      final snapshot = await FirebaseCollections.getUserTrips(userId)
-          .orderBy('createdAt', descending: true)
-          .get();
-      
+      final snapshot = await FirebaseCollections.getUserTrips(
+        userId,
+      ).orderBy('createdAt', descending: true).get();
+
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return TripDetails.fromJson(data);
@@ -101,10 +105,9 @@ class FirestoreService {
 
   /// Stream user trips
   Stream<List<TripDetails>> streamUserTrips(String userId) {
-    return FirebaseCollections.getUserTrips(userId)
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snapshot) {
+    return FirebaseCollections.getUserTrips(
+      userId,
+    ).orderBy('createdAt', descending: true).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return TripDetails.fromJson(data);
@@ -115,7 +118,10 @@ class FirestoreService {
   /// Alert Management Operations
 
   /// Save alert data
-  Future<String> saveAlert(String userId, Map<String, dynamic> alertData) async {
+  Future<String> saveAlert(
+    String userId,
+    Map<String, dynamic> alertData,
+  ) async {
     try {
       final docRef = await FirebaseCollections.getUserAlerts(userId).add({
         ...alertData,
@@ -143,13 +149,15 @@ class FirestoreService {
   }
 
   /// Get user alerts
-  Future<List<Map<String, dynamic>>> getUserAlerts(String userId, {int limit = 50}) async {
+  Future<List<Map<String, dynamic>>> getUserAlerts(
+    String userId, {
+    int limit = 50,
+  }) async {
     try {
-      final snapshot = await FirebaseCollections.getUserAlerts(userId)
-          .orderBy('createdAt', descending: true)
-          .limit(limit)
-          .get();
-      
+      final snapshot = await FirebaseCollections.getUserAlerts(
+        userId,
+      ).orderBy('createdAt', descending: true).limit(limit).get();
+
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
@@ -162,29 +170,34 @@ class FirestoreService {
   }
 
   /// Stream user alerts
-  Stream<List<Map<String, dynamic>>> streamUserAlerts(String userId, {int limit = 50}) {
+  Stream<List<Map<String, dynamic>>> streamUserAlerts(
+    String userId, {
+    int limit = 50,
+  }) {
     return FirebaseCollections.getUserAlerts(userId)
         .orderBy('createdAt', descending: true)
         .limit(limit)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        data['id'] = doc.id;
-        return data;
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            data['id'] = doc.id;
+            return data;
+          }).toList();
+        });
   }
 
   /// Location Tracking Operations
 
   /// Save location data
-  Future<void> saveLocation(String userId, Map<String, dynamic> locationData) async {
+  Future<void> saveLocation(
+    String userId,
+    Map<String, dynamic> locationData,
+  ) async {
     try {
-      await FirebaseCollections.getUserLocations(userId).add({
-        ...locationData,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+      await FirebaseCollections.getUserLocations(
+        userId,
+      ).add({...locationData, 'timestamp': FieldValue.serverTimestamp()});
     } catch (e) {
       print('Save location error: $e');
       rethrow;
@@ -199,9 +212,9 @@ class FirestoreService {
     DateTime? endDate,
   }) async {
     try {
-      Query query = FirebaseCollections.getUserLocations(userId)
-          .orderBy('timestamp', descending: true)
-          .limit(limit);
+      Query query = FirebaseCollections.getUserLocations(
+        userId,
+      ).orderBy('timestamp', descending: true).limit(limit);
 
       if (startDate != null) {
         query = query.where('timestamp', isGreaterThanOrEqualTo: startDate);
@@ -211,7 +224,7 @@ class FirestoreService {
       }
 
       final snapshot = await query.get();
-      
+
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
@@ -226,12 +239,14 @@ class FirestoreService {
   /// Emergency Contacts Operations
 
   /// Save emergency contact
-  Future<String> saveEmergencyContact(String userId, EmergencyContact contact) async {
+  Future<String> saveEmergencyContact(
+    String userId,
+    EmergencyContact contact,
+  ) async {
     try {
-      final docRef = await FirebaseCollections.getUserEmergencyContacts(userId).add({
-        ...contact.toJson(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      final docRef = await FirebaseCollections.getUserEmergencyContacts(
+        userId,
+      ).add({...contact.toJson(), 'createdAt': FieldValue.serverTimestamp()});
       return docRef.id;
     } catch (e) {
       print('Save emergency contact error: $e');
@@ -246,7 +261,9 @@ class FirestoreService {
     EmergencyContact contact,
   ) async {
     try {
-      await FirebaseCollections.getUserEmergencyContacts(userId).doc(contactId).update({
+      await FirebaseCollections.getUserEmergencyContacts(
+        userId,
+      ).doc(contactId).update({
         ...contact.toJson(),
         'lastUpdated': FieldValue.serverTimestamp(),
       });
@@ -259,7 +276,9 @@ class FirestoreService {
   /// Delete emergency contact
   Future<void> deleteEmergencyContact(String userId, String contactId) async {
     try {
-      await FirebaseCollections.getUserEmergencyContacts(userId).doc(contactId).delete();
+      await FirebaseCollections.getUserEmergencyContacts(
+        userId,
+      ).doc(contactId).delete();
     } catch (e) {
       print('Delete emergency contact error: $e');
       rethrow;
@@ -269,10 +288,10 @@ class FirestoreService {
   /// Get emergency contacts
   Future<List<EmergencyContact>> getEmergencyContacts(String userId) async {
     try {
-      final snapshot = await FirebaseCollections.getUserEmergencyContacts(userId)
-          .orderBy('createdAt')
-          .get();
-      
+      final snapshot = await FirebaseCollections.getUserEmergencyContacts(
+        userId,
+      ).orderBy('createdAt').get();
+
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return EmergencyContact.fromJson(data);
@@ -285,10 +304,9 @@ class FirestoreService {
 
   /// Stream emergency contacts
   Stream<List<EmergencyContact>> streamEmergencyContacts(String userId) {
-    return FirebaseCollections.getUserEmergencyContacts(userId)
-        .orderBy('createdAt')
-        .snapshots()
-        .map((snapshot) {
+    return FirebaseCollections.getUserEmergencyContacts(
+      userId,
+    ).orderBy('createdAt').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return EmergencyContact.fromJson(data);
@@ -346,12 +364,12 @@ class FirestoreService {
   }) async {
     try {
       Query query = FirebaseCollections.getGeoFences();
-      
+
       // Add geo-query logic here if needed
       // For now, get all geo-fences
-      
+
       final snapshot = await query.get();
-      
+
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
@@ -366,7 +384,10 @@ class FirestoreService {
   /// Analytics Operations
 
   /// Save analytics event
-  Future<void> saveAnalyticsEvent(String userId, Map<String, dynamic> eventData) async {
+  Future<void> saveAnalyticsEvent(
+    String userId,
+    Map<String, dynamic> eventData,
+  ) async {
     try {
       await _firestore.collection(FirebaseCollections.analytics).add({
         'userId': userId,
@@ -384,11 +405,15 @@ class FirestoreService {
   Future<void> batchWrite(List<BatchOperation> operations) async {
     try {
       final batch = _firestore.batch();
-      
+
       for (final operation in operations) {
         switch (operation.type) {
           case BatchOperationType.set:
-            batch.set(operation.reference, operation.data!, SetOptions(merge: true));
+            batch.set(
+              operation.reference,
+              operation.data!,
+              SetOptions(merge: true),
+            );
             break;
           case BatchOperationType.update:
             batch.update(operation.reference, operation.data!);
@@ -398,7 +423,7 @@ class FirestoreService {
             break;
         }
       }
-      
+
       await batch.commit();
     } catch (e) {
       print('Batch write error: $e');
@@ -413,11 +438,7 @@ class BatchOperation {
   final DocumentReference reference;
   final Map<String, dynamic>? data;
 
-  BatchOperation({
-    required this.type,
-    required this.reference,
-    this.data,
-  });
+  BatchOperation({required this.type, required this.reference, this.data});
 }
 
 enum BatchOperationType { set, update, delete }
